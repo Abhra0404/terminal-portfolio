@@ -1,9 +1,9 @@
 # 🖥️ Terminal Portfolio (CLI-Based Personal Website)
 
-A keyboard-first, interactive **terminal-style portfolio** that feels like SSH-ing into a developer's personal system.  
+A keyboard-first, interactive **terminal-style portfolio** that feels like SSH-ing into a developer’s personal system.  
 Built to stand out, showcase real engineering thinking, and leave a lasting impression.
 
-> "Not a website. An experience."
+> “Not a website. An experience.”
 
 ---
 
