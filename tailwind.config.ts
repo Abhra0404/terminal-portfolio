@@ -16,6 +16,7 @@ const config: Config = {
           green: '#3fb950',
           cyan: '#39c5cf',
           prompt: '#58a6ff',
+          neon: '#39ff14',
         },
       },
       fontFamily: {

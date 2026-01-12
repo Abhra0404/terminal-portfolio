@@ -2,6 +2,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { OutputBlock } from './OutputBlock';
+import { Welcome } from './Welcome';
+import { Header } from './Header';
+import { MatrixBackground } from './MatrixBackground';
 import { parseCommand, executeCommand } from './CommandHandler';
 import { commands } from '@/data/commands';
 
@@ -12,21 +15,11 @@ interface HistoryEntry {
 }
 
 const PROMPT = 'abhra@portfolio:~$';
-const WELCOME_MESSAGE = `
-Welcome to my Terminal Portfolio!
-==================================
-
-Type 'help' to see available commands.
-Type 'whoami' to learn more about me.
-
-This is a fully interactive terminal experience.
-Navigate using keyboard commands.
-`;
 
 export const Terminal: React.FC = () => {
-  const [history, setHistory] = useState<HistoryEntry[]>([
-    { prompt: '', command: '', output: WELCOME_MESSAGE },
-  ]);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [showHeader, setShowHeader] = useState(false);
   const [currentInput, setCurrentInput] = useState('');
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -68,6 +61,16 @@ export const Terminal: React.FC = () => {
       ...prev,
       { prompt: PROMPT, command: trimmedInput, output },
     ]);
+
+    // Hide welcome after first command
+    if (showWelcome) {
+      setShowWelcome(false);
+    }
+
+    // Show header when help command is typed
+    if (command.toLowerCase() === 'help') {
+      setShowHeader(true);
+    }
 
     // Add to command history
     setCommandHistory((prev) => [...prev, trimmedInput]);
@@ -144,50 +147,75 @@ export const Terminal: React.FC = () => {
   };
 
   return (
-    <div
-      ref={terminalRef}
-      onClick={handleTerminalClick}
-      className="h-screen w-full bg-terminal-bg text-terminal-text overflow-y-auto p-8 cursor-text font-mono"
-    >
-      <div className="max-w-5xl mx-auto">
-        {/* Command history output */}
-        {history.map((entry, index) => (
-          <OutputBlock
-            key={index}
-            prompt={entry.prompt}
-            command={entry.command}
-            output={entry.output}
-          />
-        ))}
+    <>
+      {/* Background Image */}
+      <div 
+        className="fixed top-0 left-0 w-full h-full -z-10"
+        style={{
+          backgroundImage: 'url(/image.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+        }}
+      />
+      {/* Dark Overlay for Better Contrast */}
+      <div 
+        className="fixed top-0 left-0 w-full h-full -z-10"
+        style={{
+          background: 'rgba(15, 23, 42, 0.4)',
+        }}
+      />
+      {showHeader && <Header />}
+      <div
+        ref={terminalRef}
+        onClick={handleTerminalClick}
+        className="min-h-screen w-full text-terminal-text overflow-y-auto p-8 cursor-text font-mono relative"
+        style={{ backgroundColor: 'transparent' }}
+      >
+        <div className="max-w-5xl mx-auto">
+          {/* Welcome Section - Show on initial load */}
+          {showWelcome && <Welcome />}
 
-        {/* Current input line */}
-        <div className="flex items-center text-sm tracking-wider">
-          <span className="text-terminal-prompt font-bold select-none">{PROMPT}</span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="ml-3 flex-1 bg-transparent outline-none border-none caret-terminal-accent text-sm tracking-wide"
-            style={{ 
-              color: '#c9d1d9',
-              fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-              fontSize: '14px',
-              fontWeight: '400',
-              letterSpacing: '0.05em',
-            }}
-            spellCheck={false}
-            autoComplete="off"
-            autoCapitalize="off"
-            autoCorrect="off"
-          />
-          <span className="cursor-blink text-terminal-accent ml-1">▊</span>
+          {history.map((entry, index) => (
+            <OutputBlock
+              key={index}
+              prompt={entry.prompt}
+              command={entry.command}
+              output={entry.output}
+            />
+          ))}
+
+          {/* Current input line */}
+          <div className="flex items-center text-sm tracking-wider">
+            <span className="font-bold select-none" style={{ color: '#14b8a6' }}>{PROMPT}</span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={currentInput}
+              onChange={(e) => setCurrentInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="ml-3 flex-1 bg-transparent outline-none border-none text-sm tracking-wide"
+              style={{ 
+                color: '#5eead4',
+                fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                fontSize: '14px',
+                fontWeight: '400',
+                letterSpacing: '0.05em',
+                caretColor: '#14b8a6',
+              }}
+              spellCheck={false}
+              autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+            />
+            <span className="cursor-blink ml-1" style={{ color: '#14b8a6' }}>▊</span>
+          </div>
+
+          {/* Scroll anchor */}
+          <div ref={outputEndRef} />
         </div>
-
-        {/* Scroll anchor */}
-        <div ref={outputEndRef} />
       </div>
-    </div>
+    </>
   );
 };
