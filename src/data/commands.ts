@@ -218,7 +218,7 @@ Contact Information:
 
 📧 Email:     aforabhra@gmail.com
 📱 Phone:     +91 9044824518
-🐙 GitHub:    https://github.com/Abhra0404
+🐙 GitHub:    https://www.github.com/Abhra0404
 💼 LinkedIn:  https://www.linkedin.com/in/abhra0404
 📍 Location:  India
 

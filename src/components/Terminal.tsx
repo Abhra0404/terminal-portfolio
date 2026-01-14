@@ -164,11 +164,10 @@ export const Terminal: React.FC = () => {
       </video>
       <div className="fixed top-0 left-0 w-full h-full bg-black/80 -z-10"></div>
 
-      {showHeader && <Header />}
       <div
         ref={terminalRef}
         onClick={handleTerminalClick}
-        className="min-h-screen w-full text-terminal-text overflow-y-auto p-8 cursor-text font-mono relative"
+        className="h-screen w-full text-terminal-text overflow-y-auto p-8 cursor-text font-mono relative"
         style={{
           backgroundColor: 'transparent',
           textShadow: '0 2px 4px rgba(0,0,0,0.8)',
@@ -178,7 +177,7 @@ export const Terminal: React.FC = () => {
           className="max-w-5xl mx-auto"
           style={{
             backgroundColor: 'transparent',
-            padding: '0 2rem 2rem 2rem',
+            padding: '0 2rem 4rem 2rem',
           }}
         >
           {/* Welcome Section - Show on initial load */}
