@@ -3,8 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { OutputBlock } from './OutputBlock';
 import { Welcome } from './Welcome';
-import { Header } from './Header';
-import { MatrixBackground } from './MatrixBackground';
 import { parseCommand, executeCommand } from './CommandHandler';
 import { commands } from '@/data/commands';
 
@@ -52,6 +50,7 @@ export const Terminal: React.FC = () => {
     // Handle clear command specially
     if (output === 'CLEAR_TERMINAL') {
       setHistory([]);
+      setShowHeader(false);
       setCurrentInput('');
       return;
     }
@@ -182,6 +181,16 @@ export const Terminal: React.FC = () => {
         >
           {/* Welcome Section - Show on initial load */}
           {showWelcome && <Welcome />}
+
+          {/* Header shown after `help` command */}
+          {showHeader && (
+            <div
+              className="mb-4 text-sm font-bold tracking-wider select-none"
+              style={{ color: '#14b8a6', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}
+            >
+              Available commands
+            </div>
+          )}
 
           {history.map((entry, index) => (
             <OutputBlock
